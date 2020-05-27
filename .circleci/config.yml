@@ -58,7 +58,7 @@ jobs:
       TERM: dumb
 
     steps:
-      - run: gradle test
+      - run: gradlew test
 
 
   verify:
