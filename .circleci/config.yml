@@ -87,6 +87,7 @@ jobs:
       TERM: dumb
 
     steps:
+      - checkout
       - run: echo "Starting verification"
       - attach_workspace:
           at: .
@@ -110,6 +111,7 @@ jobs:
       TERM: dumb
 
     steps:
+      - checkout
       - run: echo "Starting deploy"
       - attach_workspace:
           at: .
