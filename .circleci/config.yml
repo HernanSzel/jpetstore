@@ -59,7 +59,7 @@ jobs:
 
     steps:
       - run: echo 'Executing tests'
-      - run: gradle test
+      - run: ./gradlew
       - run: echo 'All tests passed!'
 
 
@@ -103,7 +103,7 @@ jobs:
 
     steps:
       - run: echo "Starting deploy"
-      - run: gradle bootRun
+      - run: ./gradlew bootRun
       - run: echo "Finished deploying"
 
 workflows:
