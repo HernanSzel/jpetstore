@@ -85,6 +85,8 @@ jobs:
 
     steps:
       - run: echo "Starting verification"
+      - attach_workspace:
+          at: .
       - run: echo "Finished verify"
 
   deploy:
@@ -106,6 +108,8 @@ jobs:
 
     steps:
       - run: echo "Starting deploy"
+      - attach_workspace:
+          at: .a
       - run: ./gradlew bootRun
       - run: echo "Finished deploying"
 
