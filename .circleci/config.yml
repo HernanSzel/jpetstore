@@ -58,15 +58,10 @@ jobs:
       TERM: dumb
 
     steps:
+      - checkout
+      - attach_workspace:
+          at: .
       - run: echo 'Executing tests'
-
-      #- run: ./gradlew dependencies
-
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-
       - run: ./gradlew test
       - run: echo 'All tests passed!'
 
