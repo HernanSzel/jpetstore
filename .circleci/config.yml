@@ -61,8 +61,13 @@ jobs:
       - run: gradle test
 
 workflows:
-  version: 1
+  version: 2
   build_and_test:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
