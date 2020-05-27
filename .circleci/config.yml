@@ -115,7 +115,8 @@ jobs:
       - run: echo "Starting deploy"
       - attach_workspace:
           at: .
-      - run: ./gradlew bootRun
+      #- run: ./gradlew bootRun #La app se ejecuta bien pero se queda corriendo sin poder pararla
+                                #A efectos practicos dejamos comentado el comando
       - run: echo "Finished deploying"
 
 workflows:
