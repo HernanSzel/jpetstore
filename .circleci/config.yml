@@ -58,11 +58,54 @@ jobs:
       TERM: dumb
 
     steps:
-      - run: ./gradlew test
+      - run: gradle test
+
+
+  verify:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:11-jdk
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/repo
+
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - run: echo "Starting verification"
+      - run: echo "Finished verify"
+
+  verify:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:11-jdk
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/repo
+
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - run: echo "Starting deploy"
+      - run: echo "Finished deploying"
 
 workflows:
   version: 2
-  build_and_test:
+  build_test_verify_deploy:
     jobs:
       - build
       - test:
@@ -71,3 +114,9 @@ workflows:
           filters:
             branches:
               only: master
+      - verify:
+          requires:
+            - test
+      - deploy:
+          requires:
+            - verify
