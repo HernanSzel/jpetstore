@@ -82,7 +82,7 @@ jobs:
       - run: echo "Starting verification"
       - run: echo "Finished verify"
 
-  verify:
+  deploy:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:11-jdk
