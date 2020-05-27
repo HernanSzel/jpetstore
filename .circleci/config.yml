@@ -59,7 +59,7 @@ jobs:
 
     steps:
       - run: echo 'Executing tests'
-      - run: ./gradlew
+      - run: ./gradlew test
       - run: echo 'All tests passed!'
 
 
