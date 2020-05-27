@@ -102,6 +102,7 @@ jobs:
 
     steps:
       - run: echo "Starting deploy"
+      - run: gradle bootRun
       - run: echo "Finished deploying"
 
 workflows:
