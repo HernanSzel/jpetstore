@@ -4,6 +4,7 @@ plugins {
     id "com.diffplug.gradle.spotless" version "4.0.1"
     id "org.springframework.boot" version "1.5.22.RELEASE"
     id "org.seasar.doma.compile" version "1.0.0"
+    id "org.sonarqube" version "2.8"
 }
 
 version = "2.36.0-beta-1"
@@ -23,6 +24,14 @@ java {
 
 springBoot {
     mainClass = "sample.Application"
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "HernanSzel_jpetstore"
+    property "sonar.organization", "hernanszel"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
 }
 
 repositories {
