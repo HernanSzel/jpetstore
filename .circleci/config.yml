@@ -39,8 +39,8 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       - run:
-	  name: Analyze on SonarCloud
-	  command: gradle build sonarqube
+	  name: "Analyze on SonarCloud"
+	  command: ./gradlew build sonarqube
       - run: ./gradlew build
       - run: ./gradlew assemble
       - store_artifacts:
