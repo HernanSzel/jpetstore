@@ -3,8 +3,6 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 version: 2
-orbs:
-  heroku: circleci/heroku@0.0.10
 jobs:
   build:
     docker:
@@ -148,5 +146,3 @@ workflows:
       - deploy:
           requires:
             - verify
-          jobs:
-            - heroku/deploy-via-git
