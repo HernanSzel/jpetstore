@@ -16,7 +16,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    #working_directory: ~/repo
+    working_directory: ~/jpetstore
 
     environment:
       # Customize the JVM maximum heap limit
@@ -101,6 +101,17 @@ jobs:
           at: .
       - run: echo "Finished verify"
 
+  deploy:
+    machine:
+      enabled: true
+    working_directory: ~/jpetstore
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+            - run: echo "Finished deploying"
 
 workflows:
   version: 2
