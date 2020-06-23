@@ -3,8 +3,6 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 version: 2
-orbs:
-  heroku: circleci/heroku@0.0.10. # Invoke the Heroku orb
 jobs:
   build:
     docker:
@@ -16,7 +14,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    working_directory: ~/jpetstore
+    #working_directory: ~/repo
 
     environment:
       # Customize the JVM maximum heap limit
@@ -75,7 +73,8 @@ jobs:
       - run: echo 'Executing tests'
       - run: ./gradlew test
       - run: echo 'All tests passed!'
-
+      - run: echo 'Now running Cucumber!'
+      - run: ./gradlew cucumber
 
   verify:
     docker:
@@ -102,16 +101,34 @@ jobs:
       - run: echo "Finished verify"
 
   deploy:
-    machine:
-      enabled: true
-    working_directory: ~/jpetstore
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:11-jdk
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    #working_directory: ~/repo
+
+    environment:
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
     steps:
       - checkout
+      - run: echo "Starting deploy"
+      - attach_workspace:
+          at: .
+            #- run: ./gradlew bootRun #La app se ejecuta bien pero se queda corriendo sin poder pararla
+          #A efectos practicos dejamos comentado el comando
       - run:
           name: Deploy Master to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
-            - run: echo "Finished deploying"
+      - run: echo "Finished deploying"
 
 workflows:
   version: 2
@@ -128,9 +145,6 @@ workflows:
       - verify:
           requires:
             - test
-      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+      - deploy:
           requires:
-            - build
-          filters:
-            branches:
-              only: sequential-branch-filter
+            - verify

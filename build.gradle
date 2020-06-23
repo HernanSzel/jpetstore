@@ -35,6 +35,12 @@ sonarqube {
   }
 }
 
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
 repositories {
     mavenCentral()
     mavenLocal()
@@ -62,12 +68,13 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testCompileOnly 'junit:junit:4.13'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+
+    testImplementation 'io.cucumber:cucumber-java:6.1.1'
 }
 
 test {
     useJUnitPlatform()
 }
-
 
 eclipse {
     classpath {
@@ -84,5 +91,16 @@ eclipse {
     }
     jdt {
         javaRuntimeName = 'JavaSE-11'
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'gradle.cucumber', 'src/test/java']
+        }
     }
 }
