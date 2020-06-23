@@ -126,6 +126,9 @@ jobs:
       #- run: ./gradlew bootRun #La app se ejecuta bien pero se queda corriendo sin poder pararla
                                 #A efectos practicos dejamos comentado el comando
       - run: echo "Finished deploying"
+      - run:
+        name: Deploy Master to Heroku
+        command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 
 workflows:
   version: 2
