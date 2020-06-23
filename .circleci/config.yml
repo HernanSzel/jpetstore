@@ -3,6 +3,8 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
 version: 2
+orbs:
+  heroku: circleci/heroku@0.0.10. # Invoke the Heroku orb
 jobs:
   build:
     docker:
@@ -99,35 +101,6 @@ jobs:
           at: .
       - run: echo "Finished verify"
 
-  deploy:
-    docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:11-jdk
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    #working_directory: ~/repo
-
-    environment:
-      # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-
-    steps:
-      - checkout
-      - run: echo "Starting deploy"
-      - attach_workspace:
-          at: .
-      #- run: ./gradlew bootRun #La app se ejecuta bien pero se queda corriendo sin poder pararla
-                                #A efectos practicos dejamos comentado el comando
-      - run: echo "Finished deploying"
-      - run:
-          name: Deploy Master to Heroku
-          command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 
 workflows:
   version: 2
@@ -144,6 +117,9 @@ workflows:
       - verify:
           requires:
             - test
-      - deploy:
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
           requires:
-            - verify
+            - build
+          filters:
+            branches:
+              only: sequential-branch-filter
